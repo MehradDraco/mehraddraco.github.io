@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MehradTorvalds - برنامه‌نویس پایتون و متخصص یادگیری ماشین</title>
+    <!-- Google Fonts - Roboto -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Base Styles & Reset */
+        :root {
+            --primary-color: #BB86FC; /* Light Purple for dark theme */
+            --secondary-color: #03DAC6; /* Teal for dark theme */
+            --accent-color: #00C853; /* Green for highlights (slightly adjusted for dark) */
+            --background-color: #121212; /* Dark background */
+            --text-color: #E0E0E0; /* Light gray text */
+            --card-background: #1E1E1E; /* Slightly lighter dark for cards */
+            --border-color: #333333; /* Darker border */
+            --link-hover-color: #9C27B0; /* Darker purple on hover */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif; /* Using Roboto font */
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            direction: rtl; /* Set base direction to RTL */
+            text-align: right; /* Align text to right */
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--primary-color);
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--link-hover-color);
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        h1, h2, h3 {
+            color: var(--text-color);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        h1 { font-size: 2.8rem; }
+        h2 { font-size: 2.2rem; }
+        h3 { font-size: 1.8rem; }
+
+        .section-padding {
+            padding: 60px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header & Navigation */
+        .header {
+            background-color: var(--card-background);
+            padding: 15px 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4); /* Darker shadow for dark theme */
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-links li a {
+            color: var(--text-color);
+            font-weight: 500;
+            position: relative;
+            padding-bottom: 5px;
+        }
+
+        .nav-links li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            bottom: 0;
+            right: 0; /* Adjusted for RTL */
+            transition: width 0.3s ease;
+        }
+
+        .nav-links li a:hover::after,
+        .nav-links li a.active::after {
+            width: 100%;
+            left: 0;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, #333333, #000000); /* Dark gradient background */
+            color: #ffffff;
+            padding: 100px 20px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 60vh; /* Minimum height for hero section */
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero-content h1 {
+            color: #ffffff;
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-content .tagline {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .highlight {
+            color: var(--secondary-color); /* Teal highlight for dark theme */
+            font-weight: bold;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            border-radius: 8px; /* Slightly rounded corners */
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .primary-btn {
+            background-color: var(--accent-color);
+            color: #ffffff;
+            border: 2px solid var(--accent-color);
+        }
+
+        .primary-btn:hover {
+            background-color: #00A343; /* Darker green */
+            transform: translateY(-2px);
+        }
+
+        .secondary-btn {
+            background-color: transparent;
+            color: #ffffff;
+            border: 2px solid #ffffff;
+        }
+
+        .secondary-btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* General Section Styles */
+        section {
+            background-color: var(--background-color);
+            margin-bottom: 0; /* Remove default margin */
+        }
+
+        section:nth-of-type(even) {
+            background-color: var(--card-background); /* Alternate background for sections */
+        }
+
+        /* About Section */
+        .about-section p {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Skills Section */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .skill-item {
+            background-color: var(--card-background);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Darker shadow for dark theme */
+            transition: transform 0.3s ease;
+            border-right: 5px solid var(--primary-color); /* Accent border for RTL */
+        }
+
+        .skill-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .skill-item h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+        }
+
+        .skill-item p {
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Projects Section */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .project-card {
+            background-color: var(--card-background);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Darker shadow for dark theme */
+            transition: transform 0.3s ease;
+            border-top: 5px solid var(--accent-color);
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .project-card h3 {
+            color: var(--text-color);
+            font-size: 1.6rem;
+            margin-bottom: 10px;
+        }
+
+        .project-card p {
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+
+        .project-card .technologies {
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+        }
+
+        .project-links .btn {
+            padding: 8px 18px;
+            font-size: 0.9rem;
+            border-radius: 5px;
+        }
+
+        .project-btn {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            border: 2px solid var(--primary-color);
+        }
+
+        .project-btn:hover {
+            background-color: var(--link-hover-color);
+            border-color: var(--link-hover-color);
+        }
+
+        .view-all-btn {
+            margin-top: 40px;
+            display: block;
+            width: fit-content;
+            margin-right: auto; /* Aligns to right in RTL */
+            margin-left: auto; /* Aligns to right in RTL */
+            background-color: var(--primary-color);
+            color: #ffffff;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border: none;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .view-all-btn:hover {
+            background-color: var(--link-hover-color);
+            transform: translateY(-2px);
+        }
+
+
+        /* Certifications Section */
+        .cert-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .cert-item {
+            background-color: var(--card-background);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Darker shadow for dark theme */
+            transition: transform 0.3s ease;
+            border-left: 5px solid var(--accent-color); /* Adjusted for RTL */
+            display: flex; /* Use flexbox for layout */
+            flex-direction: column; /* Stack image and text */
+            align-items: center; /* Center content horizontally */
+            text-align: center; /* Center text */
+        }
+
+        .cert-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .cert-item img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px; /* Rounded corners for images */
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3); /* Shadow for images */
+        }
+
+        .cert-item h3 {
+            color: var(--primary-color);
+            margin-bottom: 8px;
+        }
+
+        .cert-item p {
+            font-size: 0.95rem;
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+        }
+
+        .cert-btn {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+
+        .cert-btn:hover {
+            background-color: var(--link-hover-color);
+        }
+
+        /* Contact Section */
+        .contact-section p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-info p {
+            margin-bottom: 0.8rem;
+        }
+
+        .contact-info a {
+            font-weight: bold;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--text-color); /* Darker text color for footer background */
+            color: var(--background-color); /* Light text for footer */
+            text-align: center;
+            padding: 25px 20px;
+            font-size: 0.9rem;
+        }
+
+        .footer-links {
+            margin-top: 10px;
+        }
+
+        .footer-links a {
+            color: var(--background-color); /* Light text for footer links */
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                align-items: flex-end; /* Align logo/menu to right in RTL */
+            }
+
+            .nav-links {
+                margin-top: 15px;
+                flex-direction: column;
+                align-items: flex-end; /* Align menu items to right in RTL */
+                gap: 10px;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-content .tagline {
+                font-size: 1.2rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .btn {
+                width: 80%; /* Make buttons wider on small screens */
+                margin: 0 auto; /* Center buttons */
+            }
+
+            h2 {
+                font-size: 1.8rem;
+            }
+
+            h3 {
+                font-size: 1.4rem;
+            }
+
+            .section-padding {
+                padding: 40px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <a href="#" class="logo">MehradTorvalds</a>
+            <ul class="nav-links">
+                <li><a href="#home">خانه</a></li>
+                <li><a href="#about">درباره من</a></li>
+                <li><a href="#skills">مهارت‌ها</a></li>
+                <li><a href="#projects">پروژه‌ها</a></li>
+                <li><a href="#certifications">مدارک</a></li>
+                <li><a href="#contact">تماس با من</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- بخش خانه (Home Section) -->
+        <section id="home" class="hero-section">
+            <div class="hero-content">
+                <h1>سلام، من Mehrad Torvalds هستم.</h1>
+                <p class="tagline">یک <span class="highlight">برنامه‌نویس پایتون</span> متخصص در <span class="highlight">یادگیری ماشین</span> و <span class="highlight">توسعه بک‌اند</span></p>
+                <div class="cta-buttons">
+                    <a href="#projects" class="btn primary-btn">مشاهده پروژه‌ها</a>
+                    <a href="#contact" class="btn secondary-btn">تماس با من</a>
+                </div>
+            </div>
+            <!-- می‌توانید یک تصویر یا انیمیشن جذاب اینجا اضافه کنید -->
+        </section>
+
+        <!-- بخش درباره من (About Me Section) -->
+        <section id="about" class="about-section section-padding">
+            <h2>درباره من</h2>
+            <p> من برنامه نویس پایتون؛ مهراد طراوتی هستم. با نحوه تعلیم (train) هوش مصنوعی آشنا هستم. در حال حاضر فریلنسر و co-owner گروه MLN Studio میباشم که کار ما ساخت پروژه های متن باز و نرم افزار آزاد است میتوانید برای اطلاعات بیشتر به mlnstudio.xyz مراجعه کنید. همچنین در حال ساخت کرنلی به نام Nerkel و سیستم عاملی به نام MLN OS میباشیم.</p>
+            <p>به عنوان یک برنامه‌نویس با تجربه در پایتون، توانایی طراحی و پیاده‌سازی سیستم‌های پیچیده بک‌اند و مدل‌های یادگیری ماشین رو دارم. همچنین با Linux و C آشنایی کامل دارم.</p>
+        </section>
+
+        <!-- بخش مهارت‌ها (Skills Section) -->
+        <section id="skills" class="skills-section section-padding">
+            <h2>مهارت‌های من</h2>
+            <div class="skills-grid">
+                <div class="skill-item">
+                    <h3>پایتون</h3>
+                    <p>Django, Flask, FastAPI, Pandas, NumPy, Scikit-learn, TensorFlow, PyTorch, python-llama-cpp, Twisted, Socket</p>
+                </div>
+                <div class="skill-item">
+                    <h3>یادگیری ماشین</h3>
+                    <p>پردازش زبان طبیعی (NLP), بینایی ماشین (CV), تحلیل داده, مدل‌سازی پیش‌بینانه</p>
+                </div>
+                <div class="skill-item">
+                    <h3>توسعه بک‌اند</h3>
+                    <p>API Design, RESTful Services, Database Management (SQL, NoSQL), Microservices</p>
+                </div>
+                <div class="skill-item">
+                    <h3>لینوکس</h3>
+                    <p>Linux (Debian, Ubuntu, Archlinux and servers), Shell Scripting, Server Management, Server Developing</p>
+                </div>
+                <div class="skill-item">
+                    <h3>سایر</h3>
+                    <p>C, HTML, Git, Docker, Problem Solving, Data Structures & Algorithms</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- بخش پروژه‌ها (Projects Section) -->
+        <section id="projects" class="projects-section section-padding">
+            <h2>پروژه‌های من</h2>
+            <div class="projects-grid">
+                <!-- اینجا کارت‌های پروژه قرار می‌گیرند. فعلاً یک نمونه داریم: -->
+                <div class="project-card">
+                    <h3>پروژه اول: MLN OS</h3>
+                    <p>توضیح کوتاه: توسعه یک سیستم عامل کاملا آزاد با قابلیت همکاری تمامی برنامه نویس ها چه مبتدی چه پیشرفته تنها با یک ایمیل به ما</p>
+                    <p class="technologies">تکنولوژی‌ها: Assembelly, C, Python</p>
+                    <div class="project-links">
+                        <a href="https://github.com/mlnstudio/MLN-OS" target="_blank" class="btn project-btn">کد در گیت‌هاب</a>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <h3>پروژه دوم: Nerkel</h3>
+                    <p>توضیح کوتاه: توسعه یک کرنل کاملا آزاد با قابلیت همکاری تمامی برنامه نویس ها چه مبتدی چه پیشرفته تنها با یک ایمیل به ما</p>
+                    <p class="technologies">تکنولوژی‌ها: Assembelly, C</p>
+                    <div class="project-links">
+                        <a href="https://github.com/MehradDraco/Nerkel" target="_blank" class="btn project-btn">کد در گیت‌هاب</a>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <h3>پروژه سوم: MLN SHS Ai</h3>
+                    <p>توضیح کوتاه: توسعه یک سیستم توصیه‌گر شخصی‌سازی شده با استفاده از الگوریتم‌های یادگیری ماشین.</p>
+                    <p class="technologies">تکنولوژی‌ها: Python, Scikit-learn, Json</p>
+                    <div class="project-links">
+                        <a href="https://github.com/MehradDraco/mln-shs" target="_blank" class="btn project-btn">کد در گیت‌هاب</a>
+                    </div>
+                <div class="project-card">
+                    <h3>پروژه چهارم: Nate</h3>
+                    <p>توضیح کوتاه: توسعه یک Text Editor در CLI به صورت خیلی ساده با تم های رنگی برای کد ها</p>
+                    <p class="technologies">تکنولوژی‌ها: Python, prompt-toolkit</p>
+                    <div class="project-links">
+                        <a href="https://github.com/MehradDraco/Nate" target="_blank" class="btn project-btn">کد در گیت‌هاب</a>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- بخش مدارک (Certifications Section) -->
+        <section id="certifications" class="certifications-section section-padding">
+            <h2>مدارک معتبر</h2>
+            <div class="cert-grid">
+                <div class="cert-item">
+                    <!-- Placeholder image for the certificate -->
+                    <img src="cert1.jpg" alt="مدرک ۱">
+                    <h3>پایتون مبتدی</h3>
+                    <p>صادر کننده: آموزشگاه ویژگان؛ وابسته به وزارت علوم</p>
+                    <p>تاریخ: 1403/06</p>
+                </div>
+                <div class="cert-item">
+                    <!-- Placeholder image for the certificate -->
+                    <img src="cert2.jpg" alt="مدرک ۲">
+                    <h3>Python Essential</h3>
+                    <p>صادر کننده: فرادرس</p>
+                    <p>تاریخ: 1404/04</p>
+                </div>
+                <div class="cert-item">
+                    <img src="cert3.jpg" alt="مدرک ۳">
+                    <h3>یادگیری ماشین</h3>
+                    <p>صادرکننده: فرادرس</p>
+                    <p>1404/04</p>
+                </div>
+                <div class="cert-item">
+                    <img src="cert4.jpg" alt="مدرک ۴">
+                    <h3>اصول و مبانی برنامه نویسی</h3>
+                    <p>صادر کننده: فرادرس</p>
+                    <p>1404/04</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- بخش تماس با من (Contact Section) -->
+        <section id="contact" class="contact-section section-padding">
+            <h2>تماس با من</h2>
+            <p>برای همکاری یا سوال، می‌تونید از راه‌های زیر با من در ارتباط باشید:</p>
+            <div class="contact-info">
+                <p><strong>ایمیل:</strong> <a href="mailto:mehradtorvalds@proton.me">mehradtorvalds@proton.me</a></p>
+                <p><strong>جیمیل:</strong> <a href="mailto:mehradtorvalds@gmail.com">mehradtorvalds@gmail.com</a></p>
+                <p><strong>گیت‌هاب:</strong> <a href="https://github.com/MehradDraco" target="_blank">github.com/MehradDraco</a></p>
+                <p><strong>تلگرام:</strong> <a href="https://t.me/mehradpv" target="_blank">@MehradPv</a></p>
+                <p><strong>پیامرسان بله:</strong> <a href="ble://@mehradpv" target="_blank">@mehradpv</a></p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>MehradTorvalds 🄯 2025 GPLv3</p>
+        <div class="footer-links">
+            <a href="https://github.com/MehradDraco" target="_blank">گیت‌هاب</a>
+            <!-- سایر لینک‌های شبکه‌های اجتماعی -->
+        </div>
+    </footer>
+
+    <!-- اینجا فایل‌های JavaScript رو اضافه می‌کنیم (اگر نیاز باشه) -->
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('.nav-links a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+
+                // Remove active class from all links
+                document.querySelectorAll('.nav-links a').forEach(link => {
+                    link.classList.remove('active');
+                });
+                // Add active class to the clicked link
+                this.classList.add('active');
+            });
+        });
+
+        // Set active class on page load based on URL hash (if any)
+        window.addEventListener('load', () => {
+            if (window.location.hash) {
+                const targetId = window.location.hash;
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                    const navLink = document.querySelector(`.nav-links a[href="${targetId}"]`);
+                    if (navLink) {
+                        navLink.classList.add('active');
+                    }
+                }
+            } else {
+                // If no hash, set 'home' as active
+                const homeLink = document.querySelector('.nav-links a[href="#home"]');
+                if (homeLink) {
+                    homeLink.classList.add('active');
+                }
+            }
+        });
+
+        // Optional: Update active link on scroll
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-links a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                // Adjust offset for better accuracy when scrolling
+                if (pageYOffset >= sectionTop - sectionHeight / 3) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+    </script>
+</body>
+</html>
